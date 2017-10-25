@@ -83,8 +83,6 @@ getDirection NE = plusV (getDirection N) (getDirection E)
 getDirection SE = plusV (getDirection S) (getDirection E)
 getDirection SW = plusV (getDirection S) (getDirection W)
 
-and :: Bool -> Bool -> Bool
-and x y = if x then y else x
 
 isEnemy' :: Player -> Maybe Player -> Bool
 isEnemy' White (Just Black) = True
