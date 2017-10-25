@@ -37,11 +37,12 @@ type Board = Map.Map Coordinate Player
 emptyBoard :: Board
 emptyBoard = Map.empty
 
+startBoard :: Board
 startBoard = Map.fromList [
-  ((MakeCoordinate 4 4), Black),
-  ((MakeCoordinate 4 5), White),
-  ((MakeCoordinate 5 4), White),
-  ((MakeCoordinate 5 5), Black)]
+  (MakeCoordinate 4 4, Black),
+  (MakeCoordinate 4 5, White),
+  (MakeCoordinate 5 4, White),
+  (MakeCoordinate 5 5, Black)]
 
 getRow :: Int -- row size
   -> Int -- row
@@ -72,10 +73,10 @@ data Direction = N | S | E | W | NW | NE | SE | SW deriving Enum
 
 
 getDirection :: Direction -> Vector
-getDirection N = (MakeVector (-1)  0)
-getDirection S = (MakeVector 1  0)
-getDirection E = (MakeVector 0  1)
-getDirection W = (MakeVector 0  (-1))
+getDirection N = MakeVector (-1)  0
+getDirection S = MakeVector 1  0
+getDirection E = MakeVector 0  1
+getDirection W = MakeVector 0  (-1)
 getDirection NW = plusV (getDirection N) (getDirection W)
 getDirection NE = plusV (getDirection N) (getDirection E)
 getDirection SE = plusV (getDirection S) (getDirection E)
@@ -98,15 +99,15 @@ isEnemy board player coordinate = isEnemy' player (Map.lookup coordinate board)
 
 
 gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
-gatherEnemyCells direction board player coordinate = getResult bothEnemy where
+gatherEnemyCells direction board player coordinate = getResult (reverse bothEnemy) where
   d = getDirection direction
-  coordList = tail (iterate (\ c' -> plus c' d) coordinate)
-  playerList = map (\ c -> Map.lookup c board) coordList
+  coordList = tail (iterate (`plus` d) coordinate)
+  playerList = map (`Map.lookup` board) coordList
   both = zip coordList (tail playerList)
   bothEnemy = takeWhile (\ (c,_) -> isEnemy board player c) both
   getResult [] = []
-  getResult bothEnemy = if (isMe player (snd (last bothEnemy)))
-            then map fst bothEnemy
+  getResult l@(x:xs) = if isMe player (snd x)
+            then map fst l
             else []
 
 gatherAllEnemyCells :: Board -> Player -> Coordinate -> [Coordinate]
@@ -132,14 +133,14 @@ swap coord board = newBoard mPlayer where
 swapSeveral :: Board -> [Coordinate] -> Board
 -- swapSeveral board [] = board
 -- swapSeveral board (c:cs) = swapSeveral (swap board c) cs
-swapSeveral board cs = foldr swap board cs
+swapSeveral = foldr swap
 
 
 
 move :: Board -> Player -> Coordinate -> Maybe Board
 move board me coord = result where
   gathered = gatherAllEnemyCells board me coord
-  illegalMove = (null gathered) || (isJust (Map.lookup coord board))
+  illegalMove = null gathered || isJust (Map.lookup coord board)
   swapped = swapSeveral board gathered
   newBoard = Map.insert coord me swapped
   result = if illegalMove then Nothing else Just newBoard
