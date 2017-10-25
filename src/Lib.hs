@@ -103,7 +103,7 @@ gatherEnemyCells direction board player coordinate = getResult (reverse bothEnem
   coordList = tail (iterate (`plus` d) coordinate)
   playerList = map (`Map.lookup` board) coordList
   both = zip coordList (tail playerList)
-  bothEnemy = takeWhile (\ (c,_) -> isEnemy board player c) both
+  bothEnemy = takeWhile ((isEnemy board player) . fst) both
   getResult [] = []
   getResult l@(x:_) = if isMe player (snd x)
             then map fst l
