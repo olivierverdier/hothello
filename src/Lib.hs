@@ -9,8 +9,8 @@ import Data.Maybe (isJust)
 data Player =  Black | White deriving Eq
 
 shortCellState :: Player -> String
-shortCellState Black = "B"
-shortCellState White = "W"
+shortCellState Black = "●"
+shortCellState White = "○"
 
 data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
 data Vector = MakeVector Int Int deriving (Show)
