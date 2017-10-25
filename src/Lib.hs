@@ -64,6 +64,7 @@ printBoard (MakeCoordinate m n) board = intercalate "\n" rows
       let row = getRow n rowNb board
       return (printRow row)
 
+printStdBoard :: Board -> String
 printStdBoard = printBoard (MakeCoordinate 8 8)
 
 -- play :: Board -> Coordinate -> Board
@@ -106,7 +107,7 @@ gatherEnemyCells direction board player coordinate = getResult (reverse bothEnem
   both = zip coordList (tail playerList)
   bothEnemy = takeWhile (\ (c,_) -> isEnemy board player c) both
   getResult [] = []
-  getResult l@(x:xs) = if isMe player (snd x)
+  getResult l@(x:_) = if isMe player (snd x)
             then map fst l
             else []
 
