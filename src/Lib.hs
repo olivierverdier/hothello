@@ -18,11 +18,14 @@ type Cell = Maybe Player
 data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
 data Vector = MakeVector Int Int deriving (Show)
 
-plus :: Coordinate -> Vector -> Coordinate
-plus (MakeCoordinate i j) (MakeVector vi vj) = MakeCoordinate (i+vi) (j+vj)
+class Action a where
+  plus :: a -> Vector -> a
 
-plusV :: Vector -> Vector -> Vector
-plusV (MakeVector i j) (MakeVector vi vj) = MakeVector (i+vi) (j+vj)
+instance Action Coordinate where
+  plus (MakeCoordinate i j) (MakeVector vi vj) = MakeCoordinate (i+vi) (j+vj)
+
+instance Action Vector where
+  plus (MakeVector i j) (MakeVector vi vj) = MakeVector (i+vi) (j+vj)
 
 
 instance Show Player where
@@ -82,10 +85,10 @@ getVector N = MakeVector (-1)  0
 getVector S = MakeVector 1  0
 getVector E = MakeVector 0  1
 getVector W = MakeVector 0  (-1)
-getVector NW = plusV (getVector N) (getVector W)
-getVector NE = plusV (getVector N) (getVector E)
-getVector SE = plusV (getVector S) (getVector E)
-getVector SW = plusV (getVector S) (getVector W)
+getVector NW = plus (getVector N) (getVector W)
+getVector NE = plus (getVector N) (getVector E)
+getVector SE = plus (getVector S) (getVector E)
+getVector SW = plus (getVector S) (getVector W)
 
 isSamePlayerAs :: Player -> Cell -> Bool
 isSamePlayerAs p (Just p') = p == p'
