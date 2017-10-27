@@ -94,8 +94,8 @@ isSamePlayerAs :: Player -> Cell -> Bool
 isSamePlayerAs p (Just p') = p == p'
 isSamePlayerAs _ Nothing = False
 
-isEnemy :: Board -> Player -> Coordinate -> Bool
-isEnemy board player coordinate = isSamePlayerAs (switch player) (Map.lookup coordinate board)
+hasPlayerAt :: Board -> Player -> Coordinate -> Bool
+hasPlayerAt board player coordinate = isSamePlayerAs player (Map.lookup coordinate board)
 
 
 gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
@@ -104,7 +104,8 @@ gatherEnemyCells direction board player coordinate = getResult (reverse bothEnem
   coordList = tail (iterate (`plus` d) coordinate)
   playerList = map (`Map.lookup` board) coordList
   both = zip coordList (tail playerList)
-  bothEnemy = takeWhile ((isEnemy board player) . fst) both
+  enemy = switch player
+  bothEnemy = takeWhile ((hasPlayerAt board enemy) . fst) both
   getResult [] = []
   getResult l@(x:_) = if isSamePlayerAs player (snd x)
             then map fst l
