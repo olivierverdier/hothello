@@ -58,7 +58,7 @@ getRow size r board = do
 
 printRow :: [Cell] -> String
 printRow l = intercalate " " cellStrings
-  where cellStrings = map printCell l
+  where cellStrings = fmap printCell l
 
 printBoard :: Coordinate -> Board -> String
 printBoard (MakeCoordinate m n) board = intercalate "\n" rows
@@ -99,13 +99,13 @@ gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
 gatherEnemyCells direction board player coordinate = getResult (reverse bothEnemy) where
   d = getVector direction
   coordList = tail (iterate (`plus` d) coordinate)
-  playerList = map (`Map.lookup` board) coordList
+  playerList = fmap (`Map.lookup` board) coordList
   both = zip coordList (tail playerList)
   enemy = switch player
   bothEnemy = takeWhile ((hasPlayerAt board enemy) . fst) both
   getResult [] = []
   getResult l@(x:_) = if isSamePlayerAs player (snd x)
-            then map fst l
+            then fmap fst l
             else []
 
 gatherAllEnemyCells :: Board -> Player -> Coordinate -> [Coordinate]
