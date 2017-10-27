@@ -127,8 +127,8 @@ swap coord board = newBoard mPlayer where
   newBoard (Just p) = Map.insert coord p board
 
 
-move :: Board -> Player -> Coordinate -> Maybe Board
-move board me coord = result where
+move :: Player -> Coordinate -> Board -> Maybe Board
+move me coord board = result where
   gathered = gatherAllEnemyCells board me coord
   illegalMove = null gathered || isJust (Map.lookup coord board)
   swapped = foldr swap board gathered
