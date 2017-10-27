@@ -90,18 +90,12 @@ getDirection NE = plusV (getDirection N) (getDirection E)
 getDirection SE = plusV (getDirection S) (getDirection E)
 getDirection SW = plusV (getDirection S) (getDirection W)
 
-
-isEnemy' :: Player -> Cell -> Bool
-isEnemy' White (Just Black) = True
-isEnemy' Black (Just White) = True
-isEnemy' _ _ = False
-
-isMe :: Player -> Cell -> Bool
-isMe p (Just p') = p == p'
-isMe _ _ = False
+isSamePlayerAs :: Player -> Cell -> Bool
+isSamePlayerAs p (Just p') = p == p'
+isSamePlayerAs _ Nothing = False
 
 isEnemy :: Board -> Player -> Coordinate -> Bool
-isEnemy board player coordinate = isEnemy' player (Map.lookup coordinate board)
+isEnemy board player coordinate = isSamePlayerAs (switch player) (Map.lookup coordinate board)
 
 
 gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
@@ -112,7 +106,7 @@ gatherEnemyCells direction board player coordinate = getResult (reverse bothEnem
   both = zip coordList (tail playerList)
   bothEnemy = takeWhile ((isEnemy board player) . fst) both
   getResult [] = []
-  getResult l@(x:_) = if isMe player (snd x)
+  getResult l@(x:_) = if isSamePlayerAs player (snd x)
             then map fst l
             else []
 
