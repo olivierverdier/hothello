@@ -98,16 +98,14 @@ hasPlayerAt :: Board -> Player -> Coordinate -> Bool
 hasPlayerAt board player coordinate = isSamePlayerAs player (Map.lookup coordinate board)
 
 
-gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
-gatherEnemyCells direction board player coordinate = getResult (reverse bothEnemy) where
-  d = getVector direction
-  coordList = tail (iterate (plus d) coordinate)
-  playerList = fmap (`Map.lookup` board) coordList
-  both = zip coordList (tail playerList)
-  enemy = switch player
+enemyCellsUntilMe :: Board -> Player -> [Coordinate] ->  [Coordinate]
+enemyCellsUntilMe board me coords = getResult (reverse bothEnemy) where
+  playerList = fmap (`Map.lookup` board) coords
+  both = zip coords (tail playerList)
+  enemy = switch me
   bothEnemy = takeWhile ((hasPlayerAt board enemy) . fst) both
   getResult [] = []
-  getResult l@(x:_) = if isSamePlayerAs player (snd x)
+  getResult l@(x:_) = if isSamePlayerAs me (snd x)
             then fmap fst l
             else []
 
@@ -115,7 +113,9 @@ gatherAllEnemyCells :: Board -> Player -> Coordinate -> [Coordinate]
 gatherAllEnemyCells board player coord = concat cells where
   cells = do
     dir <- enumFrom N
-    return (gatherEnemyCells dir board player coord)
+    let vec = getVector dir
+    let coords = tail (iterate (plus vec) coord)
+    return (enemyCellsUntilMe board player coords)
 
 
 
