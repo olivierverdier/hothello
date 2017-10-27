@@ -8,6 +8,8 @@ import Data.Maybe (isJust)
 
 data Player =  Black | White deriving Eq
 
+type Cell = Maybe Player
+
 shortCellState :: Player -> String
 shortCellState Black = "●"
 shortCellState White = "○"
@@ -25,9 +27,9 @@ plusV (MakeVector i j) (MakeVector vi vj) = MakeVector (i+vi) (j+vj)
 instance Show Player where
   show = shortCellState
 
-printMCell :: Maybe Player -> String
-printMCell Nothing = "."
-printMCell (Just x) = show x
+printCell :: Cell -> String
+printCell Nothing = "."
+printCell (Just x) = show x
 
 
 type Board = Map.Map Coordinate Player
@@ -47,14 +49,14 @@ startBoard = Map.fromList [
 getRow :: Int -- row size
   -> Int -- row
   -> Board
-  -> [Maybe Player]
+  -> [Cell]
 getRow size r board = do
   i <- [1..size]
   return (Map.lookup (MakeCoordinate r i) board)
 
-printRow :: [Maybe Player] -> String
+printRow :: [Cell] -> String
 printRow l = intercalate " " cellStrings
-  where cellStrings = map printMCell l
+  where cellStrings = map printCell l
 
 printBoard :: Coordinate -> Board -> String
 printBoard (MakeCoordinate m n) board = intercalate "\n" rows
@@ -84,12 +86,12 @@ getDirection SE = plusV (getDirection S) (getDirection E)
 getDirection SW = plusV (getDirection S) (getDirection W)
 
 
-isEnemy' :: Player -> Maybe Player -> Bool
+isEnemy' :: Player -> Cell -> Bool
 isEnemy' White (Just Black) = True
 isEnemy' Black (Just White) = True
 isEnemy' _ _ = False
 
-isMe :: Player -> Maybe Player -> Bool
+isMe :: Player -> Cell -> Bool
 isMe p (Just p') = p == p'
 isMe _ _ = False
 
