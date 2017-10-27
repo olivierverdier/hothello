@@ -80,15 +80,15 @@ printStdBoard = printBoard (MakeCoordinate 8 8)
 data Direction = N | S | E | W | NW | NE | SE | SW deriving Enum
 
 
-getDirection :: Direction -> Vector
-getDirection N = MakeVector (-1)  0
-getDirection S = MakeVector 1  0
-getDirection E = MakeVector 0  1
-getDirection W = MakeVector 0  (-1)
-getDirection NW = plusV (getDirection N) (getDirection W)
-getDirection NE = plusV (getDirection N) (getDirection E)
-getDirection SE = plusV (getDirection S) (getDirection E)
-getDirection SW = plusV (getDirection S) (getDirection W)
+getVector :: Direction -> Vector
+getVector N = MakeVector (-1)  0
+getVector S = MakeVector 1  0
+getVector E = MakeVector 0  1
+getVector W = MakeVector 0  (-1)
+getVector NW = plusV (getVector N) (getVector W)
+getVector NE = plusV (getVector N) (getVector E)
+getVector SE = plusV (getVector S) (getVector E)
+getVector SW = plusV (getVector S) (getVector W)
 
 isSamePlayerAs :: Player -> Cell -> Bool
 isSamePlayerAs p (Just p') = p == p'
@@ -100,7 +100,7 @@ hasPlayerAt board player coordinate = isSamePlayerAs player (Map.lookup coordina
 
 gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
 gatherEnemyCells direction board player coordinate = getResult (reverse bothEnemy) where
-  d = getDirection direction
+  d = getVector direction
   coordList = tail (iterate (`plus` d) coordinate)
   playerList = map (`Map.lookup` board) coordList
   both = zip coordList (tail playerList)
