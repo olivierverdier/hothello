@@ -15,10 +15,6 @@ switch White = Black
 
 type Cell = Maybe Player
 
-shortCellState :: Player -> String
-shortCellState Black = "●"
-shortCellState White = "○"
-
 data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
 data Vector = MakeVector Int Int deriving (Show)
 
@@ -30,7 +26,8 @@ plusV (MakeVector i j) (MakeVector vi vj) = MakeVector (i+vi) (j+vj)
 
 
 instance Show Player where
-  show = shortCellState
+  show Black = "●"
+  show White = "○"
 
 printCell :: Cell -> String
 printCell Nothing = "."
