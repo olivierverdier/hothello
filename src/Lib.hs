@@ -19,10 +19,10 @@ data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
 data Vector = MakeVector Int Int deriving (Show)
 
 class Action a where
-  plus :: a -> Vector -> a
+  plus :: Vector -> a -> a
 
 instance Action Coordinate where
-  plus (MakeCoordinate i j) (MakeVector vi vj) = MakeCoordinate (i+vi) (j+vj)
+  plus (MakeVector vi vj) (MakeCoordinate i j) = MakeCoordinate (i+vi) (j+vj)
 
 instance Action Vector where
   plus (MakeVector i j) (MakeVector vi vj) = MakeVector (i+vi) (j+vj)
@@ -101,7 +101,7 @@ hasPlayerAt board player coordinate = isSamePlayerAs player (Map.lookup coordina
 gatherEnemyCells :: Direction -> Board -> Player -> Coordinate ->  [Coordinate]
 gatherEnemyCells direction board player coordinate = getResult (reverse bothEnemy) where
   d = getVector direction
-  coordList = tail (iterate (`plus` d) coordinate)
+  coordList = tail (iterate (plus d) coordinate)
   playerList = fmap (`Map.lookup` board) coordList
   both = zip coordList (tail playerList)
   enemy = switch player
