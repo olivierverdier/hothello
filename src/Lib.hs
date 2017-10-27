@@ -8,6 +8,11 @@ import Data.Maybe (isJust)
 
 data Player =  Black | White deriving Eq
 
+switch :: Player -> Player
+switch Black = White
+switch White = Black
+
+
 type Cell = Maybe Player
 
 shortCellState :: Player -> String
@@ -116,10 +121,6 @@ gatherAllEnemyCells board player coord = concat cells where
   cells = do
     dir <- enumFrom N
     return (gatherEnemyCells dir board player coord)
-
-switch :: Player -> Player
-switch Black = White
-switch White = Black
 
 
 
