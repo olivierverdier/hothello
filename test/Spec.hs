@@ -11,14 +11,13 @@ board6 :: Board
 board6 = putColAt Black 1 [1..3] $ putColAt White 2 [1..3] emptyBoard
 
 board6_13 :: Board
-board6_13 = putBlack (MakeCoordinate 1 3) $ putBlack (MakeCoordinate 1 2) $ putBlack (MakeCoordinate 2 2) board6
+board6_13 = putBlack (MakeCoordinate 1 3) $ putColAt Black 2 [1..2]  board6
 
 play34 :: Maybe Board
 play34 = tryMove White (MakeCoordinate 3 4) startBoard
 
 expected34 :: Board
-expected34 =
-  putWhite (MakeCoordinate 3 4) $ putWhite (MakeCoordinate 4 4) startBoard
+expected34 = putColAt White 4 [3..4] startBoard
 
 
 unitTests :: TestTree
