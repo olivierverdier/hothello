@@ -79,5 +79,11 @@ swap coord board = newBoard mPlayer where
   newBoard Nothing = board
   newBoard (Just p) = Map.insert coord p board
 
-playAt :: Player -> Coordinate -> Board -> Board
-playAt me coord = Map.insert coord me
+putAt :: Player -> Coordinate -> Board -> Board
+putAt me coord = Map.insert coord me
+
+putWhite :: Coordinate -> Board -> Board
+putWhite = putAt White
+
+putBlack :: Coordinate -> Board -> Board
+putBlack = putAt Black

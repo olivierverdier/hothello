@@ -12,8 +12,6 @@ play34 = tryMove White (MakeCoordinate 3 4) startBoard
 expected34 :: Board
 expected34 =
   putWhite (MakeCoordinate 3 4) $ putWhite (MakeCoordinate 4 4) startBoard
-  where
-    putWhite = playAt White
 
 
 unitTests :: TestTree
