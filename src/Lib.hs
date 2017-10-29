@@ -1,6 +1,4 @@
-module Lib
-    ( someFunc
-    ) where
+module Lib where
 
 import Data.Maybe (isNothing)
 
@@ -34,7 +32,7 @@ tryMove me coord board = result where
   gathered = gatherAllEnemyCells board me coord
   current = Map.lookup coord board
   legal = allowFromCell current && allowFromGathered gathered
-  newBoard = addPieceAt me coord board
+  newBoard = addPieceAt me coord (swapGathered gathered board)
   result = if legal then Just newBoard else Nothing
 
 

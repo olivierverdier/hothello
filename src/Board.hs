@@ -78,3 +78,6 @@ swap coord board = newBoard mPlayer where
   mPlayer = fmap switch cell
   newBoard Nothing = board
   newBoard (Just p) = Map.insert coord p board
+
+playAt :: Player -> Coordinate -> Board -> Board
+playAt me coord = Map.insert coord me
