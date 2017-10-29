@@ -26,7 +26,11 @@ unitTests = testGroup "HUnit tests" [
   testCase "First legal turn" $
   play34 @?= Just expected34,
   testCase "Black 1 3 after board 6" $
-  tryMove Black (MakeCoordinate 1 3) board6 @?= Just board6_13
+  tryMove Black (MakeCoordinate 1 3) board6 @?= Just board6_13,
+  testCase "Illegal empty move" $
+  tryMove Black (MakeCoordinate 1 1) startBoard @?= Nothing,
+  testCase "Illegal occupied move" $
+  tryMove Black (MakeCoordinate 4 4) startBoard @?= Nothing
                                     ]
 
 tests :: TestTree
