@@ -8,7 +8,8 @@ import Data.List (intercalate)
 
 type Board = Map.Map Coordinate Player
 
-
+getCell :: Board -> Coordinate -> Cell
+getCell board coord = Map.lookup coord board
 
 emptyBoard :: Board
 emptyBoard = Map.empty
