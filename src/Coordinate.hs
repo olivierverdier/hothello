@@ -1,6 +1,15 @@
 module Coordinate where
 
+import Test.Tasty.QuickCheck
+
 data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord)
+
+instance Arbitrary Coordinate where
+  arbitrary = do
+    Positive x <- arbitrary
+    Positive y <- arbitrary
+    return (MakeCoordinate x y)
+
 data Vector = MakeVector Int Int deriving (Show)
 
 instance Show Coordinate where

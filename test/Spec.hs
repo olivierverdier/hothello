@@ -1,5 +1,6 @@
 import Test.Tasty
 import Test.Tasty.HUnit
+import Test.Tasty.QuickCheck as QC
 
 import Lib 
 import Board
@@ -29,8 +30,19 @@ unitTests = testGroup "HUnit tests" [
   tryMove Black (MakeCoordinate 4 4) startBoard @?= Nothing
                                     ]
 
+checkGatheredAreEnemies :: Board -> Player -> Coordinate -> Bool
+checkGatheredAreEnemies board player coord = all check cells where
+  coords = gatherAllEnemyCells board player coord
+  cells = fmap (getCell board) coords
+  check = isSamePlayerAs (switch player)
+
+qcProps :: TestTree
+qcProps = testGroup "QuickCheck tests" [
+  QC.testProperty "only enemy gathered" checkGatheredAreEnemies
+                                       ]
+
 tests :: TestTree
-tests = testGroup "Tests" [unitTests]
+tests = testGroup "Tests" [unitTests, qcProps]
 
 main :: IO ()
 main = defaultMain tests

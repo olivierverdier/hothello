@@ -1,6 +1,11 @@
 module Player where
 
-data Player =  Black | White deriving Eq
+import Test.Tasty.QuickCheck
+
+data Player =  Black | White deriving (Eq, Bounded, Enum)
+
+instance Arbitrary Player where
+  arbitrary = arbitraryBoundedEnum
 
 switch :: Player -> Player
 switch Black = White
