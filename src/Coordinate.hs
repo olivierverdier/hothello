@@ -1,7 +1,10 @@
 module Coordinate where
 
-data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
+data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord)
 data Vector = MakeVector Int Int deriving (Show)
+
+instance Show Coordinate where
+  show (MakeCoordinate x y) = "(" ++ show x ++ "," ++ show y ++ ")"
 
 class Action a where
   plus :: Vector -> a -> a
