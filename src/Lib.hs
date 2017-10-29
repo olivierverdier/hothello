@@ -7,13 +7,13 @@ import Player
 import Coordinate
 import Board
 
+import Control.Monad.State.Lazy
 
 
 
 
-
-swapGathered :: [Coordinate] -> Board -> Board
-swapGathered gathered board = foldr swap board gathered
+swapCells :: [Coordinate] -> Board -> Board
+swapCells cells board = foldr swap board cells
 
 -- rules
 
@@ -23,14 +23,31 @@ allowFromGathered = not . null
 allowFromCell :: Cell -> Bool
 allowFromCell = isNothing
 
-tryMove :: Player -> Coordinate -> Board -> Maybe Board
-tryMove me coord board = result where
-  gathered = gatherAllEnemyCells board me coord
-  current = getCell board coord
-  legal = allowFromCell current && allowFromGathered gathered
-  newBoard = putAt me coord (swapGathered gathered board)
-  result = if legal then Just newBoard else Nothing
+moveGather :: Player -> Coordinate -> State Board [Coordinate]
+moveGather me coord = do
+  board <- get
+  let cells = gatherAllEnemyCells board me coord
+  put (swapCells cells board)
+  return cells
 
+moveCheck :: Player -> Coordinate -> State Board Cell
+moveCheck me coord = do
+  board <- get
+  put (putAt me coord board)
+  return (getCell board coord)
+
+stateMove :: Player -> Coordinate -> State Board Bool
+stateMove me coord = do
+  cells <- moveGather me coord
+  pos <- moveCheck me coord
+  return (allowFromCell pos && allowFromGathered cells)
+
+onlyIf :: Bool -> a -> Maybe a
+onlyIf f x = if f then Just x else Nothing
+
+tryMove :: Player -> Coordinate -> Board -> Maybe Board
+tryMove me coord board = onlyIf legal newBoard where
+  (legal, newBoard) = runState (stateMove me coord) board
 
 
 
