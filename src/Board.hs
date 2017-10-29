@@ -87,3 +87,6 @@ putWhite = putAt White
 
 putBlack :: Coordinate -> Board -> Board
 putBlack = putAt Black
+
+putColAt :: Player -> Int -> [Int] -> Board -> Board
+putColAt me col rows board = foldr (\ r b -> putAt me (MakeCoordinate r col) b) board rows
