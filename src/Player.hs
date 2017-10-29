@@ -1,6 +1,6 @@
 module Player where
 
-import Test.Tasty.QuickCheck
+import Test.Tasty.QuickCheck (Arbitrary (arbitrary), arbitraryBoundedEnum)
 
 data Player =  Black | White deriving (Eq, Bounded, Enum)
 

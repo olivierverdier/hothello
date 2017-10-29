@@ -1,13 +1,12 @@
 module Lib where
 
 import Data.Maybe (isNothing)
+import Control.Monad.State.Lazy (State, get, put, runState)
 
+import Player (Player, Cell)
+import Coordinate (Coordinate)
+import Board (Board, swap, gatherAllEnemyCells, putAt, getCell)
 
-import Player
-import Coordinate
-import Board
-
-import Control.Monad.State.Lazy
 
 
 

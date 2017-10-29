@@ -1,6 +1,6 @@
 module Coordinate where
 
-import Test.Tasty.QuickCheck
+import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Positive (Positive))
 
 data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord)
 
@@ -37,3 +37,9 @@ getVector NE = plus (getVector N) (getVector E)
 getVector SE = plus (getVector S) (getVector E)
 getVector SW = plus (getVector S) (getVector W)
 
+coordsInDir :: Coordinate -> Direction -> [Coordinate]
+coordsInDir coord dir = iterate (plus vec) coord where
+  vec = getVector dir
+
+allDirections :: [Direction]
+allDirections = enumFrom N

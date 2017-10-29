@@ -1,10 +1,11 @@
 module Board where
 
-import Coordinate
-import Player
-
 import qualified Data.Map.Strict as Map
 import Data.List (intercalate)
+
+import Coordinate (Coordinate(MakeCoordinate), coordsInDir, allDirections)
+import Player (Player(Black, White), Cell, printCell, switch)
+
 
 type Board = Map.Map Coordinate Player
 
@@ -66,9 +67,8 @@ enemyCellsUntilMe board me coords = getResult (reverse bothEnemy) where
 gatherAllEnemyCells :: Board -> Player -> Coordinate -> [Coordinate]
 gatherAllEnemyCells board player coord = concat cells where
   cells = do
-    dir <- enumFrom N
-    let vec = getVector dir
-    let coords = tail (iterate (plus vec) coord)
+    dir <- allDirections
+    let coords = tail (coordsInDir coord dir)
     return (enemyCellsUntilMe board player coords)
 
 
