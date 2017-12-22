@@ -13,7 +13,7 @@ instance Arbitrary Coordinate where
 data Vector = MakeVector Int Int deriving (Show)
 
 instance Show Coordinate where
-  show (MakeCoordinate x y) = "(" ++ show x ++ "," ++ show y ++ ")"
+  show (MakeCoordinate x y) = "[" ++ show x ++ "," ++ show y ++ "]"
 
 class Action a where
   plus :: Vector -> a -> a
