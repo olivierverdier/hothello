@@ -1,6 +1,6 @@
 module Game where
 
-import Lib (stateMove)
+import Move (stateMove)
 import Board (Board, startBoard)
 import Player (Player(Black), switch)
 import Coordinate (Coordinate)

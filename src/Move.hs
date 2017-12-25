@@ -1,4 +1,4 @@
-module Lib where
+module Move where
 
 import Data.Maybe (isNothing)
 import Control.Monad.State.Lazy (StateT, get, put)

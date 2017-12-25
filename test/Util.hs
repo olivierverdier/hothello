@@ -4,7 +4,7 @@ import Player(Player)
 import Coordinate(Coordinate)
 import Board(Board)
 
-import Lib(stateMove)
+import Move(stateMove)
 
 import Control.Monad.State.Lazy (runState)
 
