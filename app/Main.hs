@@ -2,8 +2,7 @@ module Main where
 
 import Game
 import Board
-import Control.Monad.State.Lazy (get, runState, put, liftIO,
-                                StateT, lift, runStateT)
+import Control.Monad.State.Lazy (get, put, StateT, liftIO, runStateT)
 import Input
 
 
@@ -39,9 +38,8 @@ gameSession :: StateT Game IO ()
 gameSession = do
   game <- get
   _ <- liftIO (prompt game)
-  mi <- lift getMove
-  let (s, g') = runState (reaction mi) game
-  put g'
+  mi <- liftIO getMove
+  s <- reaction mi
   _ <- liftIO (putStrLn s)
   gameSession
 
