@@ -1,7 +1,7 @@
 module Lib where
 
 import Data.Maybe (isNothing)
-import Control.Monad.State.Lazy (StateT, get, put, runState)
+import Control.Monad.State.Lazy (StateT, get, put)
 
 import Player (Player, Cell)
 import Coordinate (Coordinate)
@@ -38,12 +38,4 @@ stateMove me coord = do
   cells <- moveGather me coord
   pos <- moveCheck me coord
   return (allowFromCell pos && allowFromGathered cells)
-
-onlyIf :: Bool -> a -> Maybe a
-onlyIf f x = if f then Just x else Nothing
-
-tryMove :: Player -> Coordinate -> Board -> Maybe Board
-tryMove me coord board = onlyIf legal newBoard where
-  (legal, newBoard) = runState (stateMove me coord) board
-
 

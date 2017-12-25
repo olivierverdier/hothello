@@ -2,10 +2,13 @@ import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck as QC
 
-import Lib 
+import Util (tryMove)
+
 import Board
 import Player
 import Coordinate
+
+
 
 
 board6 :: Board
