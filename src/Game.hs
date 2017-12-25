@@ -4,7 +4,7 @@ import Lib (stateMove)
 import Board (Board, startBoard)
 import Player (Player(Black), switch)
 import Coordinate (Coordinate)
-import Control.Monad.State.Lazy 
+import Control.Monad.State.Lazy (StateT, get, lift, put, modify)
 
 data Game = MkGame { getBoard :: Board, getPlayer :: Player } deriving Show
 
