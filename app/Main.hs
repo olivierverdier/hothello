@@ -3,7 +3,7 @@ module Main where
 import Player (Player(Black))
 import Game
 import Board
-import Control.Monad.State.Lazy (get, put, StateT, liftIO, runStateT, lift)
+import Control.Monad.State.Lazy (get, put, StateT, liftIO, runStateT, lift, sequence_)
 import Input
 
 
@@ -38,8 +38,8 @@ prompt (MkGame board player) =
     print player
     putStrLn (printStdBoard board)
 
-gameSession :: StateT Player (StateT Board IO) ()
-gameSession = do
+gameTurn :: StateT Player (StateT Board IO) ()
+gameTurn = do
   player <- get
   board <- lift get
   let game = MkGame board player
@@ -47,10 +47,12 @@ gameSession = do
   mi <- liftIO getMove
   s <- reaction mi
   _ <- liftIO (putStrLn s)
-  gameSession
+  return ()
+
+gameTurns :: StateT Player (StateT Board IO) ()
+gameTurns = sequence_ (fmap (const gameTurn) [(1::Int)..])
 
 main :: IO ()
 main = do
-  _ <- runStateT (runStateT gameSession Black) startBoard
+  _ <- runStateT (runStateT gameTurns Black) startBoard
   return ()
-
