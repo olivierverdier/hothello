@@ -2,7 +2,7 @@ module Main where
 
 import Game
 import Board
-import Control.Monad.State.Lazy (get, put, StateT, liftIO, runStateT)
+import Control.Monad.State.Lazy (get, gets, put, StateT, liftIO, runStateT)
 import Input
 
 
@@ -14,7 +14,7 @@ reaction (Just (Left _)) = do
 reaction (Just (Right c)) = do
   before <- get
   legal <- play c
-  MkGame board _ <- get
+  board <- gets getBoard
   decision legal board before where
     decision False _ before = do
       put before -- return to previous state
