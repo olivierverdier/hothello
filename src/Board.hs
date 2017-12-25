@@ -58,7 +58,7 @@ enemyCellsUntilMe board me coords = getResult (reverse bothEnemy) where
   playerList = fmap (`Map.lookup` board) coords
   both = zip coords (tail playerList)
   enemy = switch me
-  bothEnemy = takeWhile ((hasPlayerAt board enemy) . fst) both
+  bothEnemy = takeWhile (hasPlayerAt board enemy . fst) both
   getResult [] = []
   getResult l@(x:_) = if isSamePlayerAs me (snd x)
             then fmap fst l
