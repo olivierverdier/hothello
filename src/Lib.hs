@@ -47,6 +47,3 @@ tryMove me coord board = onlyIf legal newBoard where
   (legal, newBoard) = runState (stateMove me coord) board
 
 
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
