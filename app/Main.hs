@@ -2,12 +2,12 @@ module Main where
 
 import Game
 import Board
-import Control.Monad.State.Lazy (State, get, runState, put, liftIO,
+import Control.Monad.State.Lazy (get, runState, put, liftIO,
                                 StateT, lift, runStateT)
 import Input
 
 
-reaction :: Maybe Input -> State Game String
+reaction :: (Monad m) => Maybe Input -> StateT Game m String
 reaction Nothing = return "??"
 reaction (Just (Left _)) = do
   _ <- switchPlayer

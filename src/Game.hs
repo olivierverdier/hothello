@@ -11,7 +11,7 @@ data Game = MkGame { getBoard :: Board, getPlayer :: Player } deriving Show
 startGame :: Game
 startGame = MkGame startBoard Black
 
-play :: Coordinate -> State Game Bool
+play :: (Monad m) => Coordinate -> StateT Game m Bool
 play coord  = do
   (MkGame board player) <- get
   let (legal, newBoard) = runState (stateMove player coord) board
@@ -19,7 +19,7 @@ play coord  = do
   _ <- switchPlayer
   return legal
 
-switchPlayer :: State Game ()
+switchPlayer :: (Monad m) => StateT Game m ()
 switchPlayer = do
   (MkGame board player) <- get
   put (MkGame board (switch player))

@@ -1,13 +1,11 @@
 module Lib where
 
 import Data.Maybe (isNothing)
-import Control.Monad.State.Lazy (State, get, put, runState)
+import Control.Monad.State.Lazy (StateT, get, put, runState)
 
 import Player (Player, Cell)
 import Coordinate (Coordinate)
 import Board (Board, swap, gatherAllEnemyCells, putAt, getCell)
-
-
 
 
 
@@ -22,20 +20,20 @@ allowFromGathered = not . null
 allowFromCell :: Cell -> Bool
 allowFromCell = isNothing
 
-moveGather :: Player -> Coordinate -> State Board [Coordinate]
+moveGather :: (Monad m) => Player -> Coordinate -> StateT Board m [Coordinate]
 moveGather me coord = do
   board <- get
   let cells = gatherAllEnemyCells board me coord
   put (swapCells cells board)
   return cells
 
-moveCheck :: Player -> Coordinate -> State Board Cell
+moveCheck :: (Monad m) => Player -> Coordinate -> StateT Board m Cell
 moveCheck me coord = do
   board <- get
   put (putAt me coord board)
   return (getCell board coord)
 
-stateMove :: Player -> Coordinate -> State Board Bool
+stateMove :: (Monad m) => Player -> Coordinate -> StateT Board m Bool
 stateMove me coord = do
   cells <- moveGather me coord
   pos <- moveCheck me coord
