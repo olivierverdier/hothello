@@ -3,7 +3,7 @@ module Main where
 import Player (Player(Black))
 import Game
 import Board
-import Control.Monad.State.Lazy (get, put, StateT, liftIO, runStateT, lift, sequence_)
+import Control.Monad.State.Lazy (get, StateT, liftIO, runStateT, lift, sequence_)
 import Input
 
 
@@ -13,16 +13,14 @@ reaction (Just (Left _)) = do
   _ <- switchPlayer
   return "pass"
 reaction (Just (Right c)) = do
-  currentPlayer <- get
-  currentBoard <- lift get
+  game <- getGame
   legal <- play c
   board <- lift get
   if legal
     then
       return (printStdBoard board)
     else do
-      put currentPlayer
-      lift (put currentBoard) -- return to previous state
+      putGame game -- return to previous state
       return "illegal move"
 
 

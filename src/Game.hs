@@ -21,3 +21,15 @@ play coord  = do
 
 switchPlayer :: (Monad m) => StateT Player m ()
 switchPlayer = modify switch
+
+putGame :: (Monad m) => Game -> StateT Player (StateT Board m) ()
+putGame (MkGame board player) = do
+  put player
+  lift (put board)
+
+
+getGame :: (Monad m) => StateT Player (StateT Board m) Game
+getGame = do
+  player <- get
+  board <- lift get
+  return (MkGame board player)
