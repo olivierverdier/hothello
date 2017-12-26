@@ -4,7 +4,7 @@ import Player(Player)
 import Coordinate(Coordinate)
 import Board(Board)
 
-import Move(stateMove)
+import Move(move)
 
 import Control.Monad.State.Lazy (runState)
 
@@ -13,4 +13,4 @@ onlyIf f x = if f then Just x else Nothing
 
 tryMove :: Player -> Coordinate -> Board -> Maybe Board
 tryMove me coord board = onlyIf legal newBoard where
-  (legal, newBoard) = runState (stateMove me coord) board
+  (legal, newBoard) = runState (move me coord) board

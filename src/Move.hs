@@ -33,8 +33,8 @@ moveCheck me coord = do
   put (putAt me coord board)
   return (getCell board coord)
 
-stateMove :: (Monad m) => Player -> Coordinate -> StateT Board m Bool
-stateMove me coord = do
+move :: (Monad m) => Player -> Coordinate -> StateT Board m Bool
+move me coord = do
   cells <- moveGather me coord
   pos <- moveCheck me coord
   return (allowFromCell pos && allowFromGathered cells)

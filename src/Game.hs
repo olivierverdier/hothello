@@ -1,6 +1,6 @@
 module Game where
 
-import Move (stateMove)
+import Move (move)
 import Board (Board, startBoard)
 import Player (Player(Black), switch)
 import Coordinate (Coordinate)
@@ -14,7 +14,7 @@ startGame = MkGame startBoard Black
 play :: (Monad m) => Coordinate -> StateT Player (StateT Board m) Bool
 play coord  = do
   player <- get
-  legal <- lift (stateMove player coord)
+  legal <- lift (move player coord)
   put player
   _ <- switchPlayer
   return legal
