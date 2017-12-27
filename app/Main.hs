@@ -1,13 +1,15 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Player (Player(Black))
+import Protolude
+
+import Player (Player(Black), printPlayer)
 import Game
 import Board
-import Control.Monad.State.Lazy (get, StateT, liftIO, runStateT, lift, sequence_)
 import Input
 
 
-reaction :: (Monad m) => Maybe Input -> StateT Player (StateT Board m) String
+reaction :: (Monad m) => Maybe Input -> StateT Player (StateT Board m) Text
 reaction Nothing = return "??"
 reaction (Just (Left _)) = do
   _ <- switchPlayer
@@ -33,7 +35,7 @@ getMove = do
 prompt :: Game -> IO()
 prompt (MkGame board player) =
   do
-    print player
+    putStrLn (printPlayer player)
     putStrLn (printStdBoard board)
 
 gameTurn :: StateT Player (StateT Board IO) ()

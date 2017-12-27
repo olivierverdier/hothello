@@ -1,12 +1,12 @@
 module Util where
 
+import Protolude
+
 import Player(Player)
 import Coordinate(Coordinate)
 import Board(Board)
 
 import Move(move)
-
-import Control.Monad.State.Lazy (runState)
 
 onlyIf :: Bool -> a -> Maybe a
 onlyIf f x = if f then Just x else Nothing

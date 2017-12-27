@@ -1,4 +1,8 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Player where
+
+import Protolude
+
 
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary), arbitraryBoundedEnum)
 
@@ -12,12 +16,12 @@ switch Black = White
 switch White = Black
 
 
-printPlayer :: Player -> String
+printPlayer :: Player -> Text
 printPlayer Black = "●"
 printPlayer White = "○"
 
 type Cell = Maybe Player
 
-printCell :: Cell -> String
+printCell :: Cell -> Text
 printCell Nothing = "."
 printCell (Just x) = printPlayer x

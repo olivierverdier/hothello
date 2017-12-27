@@ -1,5 +1,7 @@
 module Coordinate where
 
+import Protolude
+
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Positive (Positive))
 
 data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)

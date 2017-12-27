@@ -1,7 +1,11 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Board where
 
+import Protolude hiding (intercalate)
+
 import qualified Data.Map.Strict as Map
-import Data.List (intercalate)
+import Data.Text (intercalate)
 
 import Coordinate (Coordinate(MakeCoordinate), coordsInDir, allDirections)
 import Player (Player(Black, White), Cell, printCell, switch)
@@ -30,11 +34,11 @@ getRow size r board = do
   i <- [1..size]
   return (Map.lookup (MakeCoordinate r i) board)
 
-printRow :: [Cell] -> String
+printRow :: [Cell] -> Text
 printRow l = intercalate " " cellStrings
   where cellStrings = fmap printCell l
 
-printBoard :: Coordinate -> Board -> String
+printBoard :: Coordinate -> Board -> Text
 printBoard (MakeCoordinate m n) board = intercalate "\n" rows
   where
     rows = do
@@ -42,7 +46,7 @@ printBoard (MakeCoordinate m n) board = intercalate "\n" rows
       let row = getRow n rowNb board
       return (printRow row)
 
-printStdBoard :: Board -> String
+printStdBoard :: Board -> Text
 printStdBoard = printBoard (MakeCoordinate 8 8)
 
 isSamePlayerAs :: Player -> Cell -> Bool
@@ -56,7 +60,7 @@ hasPlayerAt board player coordinate = isSamePlayerAs player (Map.lookup coordina
 enemyCellsUntilMe :: Board -> Player -> [Coordinate] ->  [Coordinate]
 enemyCellsUntilMe board me coords = getResult (reverse bothEnemy) where
   playerList = fmap (`Map.lookup` board) coords
-  both = zip coords (tail playerList)
+  both = zip coords (tailSafe playerList)
   enemy = switch me
   bothEnemy = takeWhile (hasPlayerAt board enemy . fst) both
   getResult [] = []
@@ -68,13 +72,13 @@ gatherAllEnemyCells :: Board -> Player -> Coordinate -> [Coordinate]
 gatherAllEnemyCells board player coord = concat cells where
   cells = do
     dir <- allDirections
-    let coords = tail (coordsInDir coord dir)
+    let coords = tailSafe (coordsInDir coord dir)
     return (enemyCellsUntilMe board player coords)
 
 
 
-swap :: Coordinate -> Board -> Board
-swap coord board = newBoard mPlayer where
+swapAt :: Coordinate -> Board -> Board
+swapAt coord board = newBoard mPlayer where
   cell = Map.lookup coord board
   mPlayer = fmap switch cell
   newBoard Nothing = board

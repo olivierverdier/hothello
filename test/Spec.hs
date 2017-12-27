@@ -1,3 +1,5 @@
+import Protolude
+
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck as QC
@@ -34,10 +36,10 @@ unitTests = testGroup "HUnit tests" [
                                     ]
 
 checkGatheredAreEnemies :: Board -> Player -> Coordinate -> Bool
-checkGatheredAreEnemies board player coord = all check cells where
+checkGatheredAreEnemies board player coord = all checks cells where
   coords = gatherAllEnemyCells board player coord
   cells = fmap (getCell board) coords
-  check = isSamePlayerAs (switch player)
+  checks = isSamePlayerAs (switch player)
 
 qcProps :: TestTree
 qcProps = testGroup "QuickCheck tests" [

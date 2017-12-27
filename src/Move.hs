@@ -1,16 +1,16 @@
 module Move where
 
-import Data.Maybe (isNothing)
-import Control.Monad.State.Lazy (StateT, get, put)
+import Protolude
+
 
 import Player (Player, Cell)
 import Coordinate (Coordinate)
-import Board (Board, swap, gatherAllEnemyCells, putAt, getCell)
+import Board (Board, swapAt, gatherAllEnemyCells, putAt, getCell)
 
 
 
 swapCells :: [Coordinate] -> Board -> Board
-swapCells cells board = foldr swap board cells
+swapCells cells board = foldr swapAt board cells
 
 -- rules
 
