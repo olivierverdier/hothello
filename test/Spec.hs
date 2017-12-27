@@ -6,9 +6,9 @@ import Test.Tasty.QuickCheck as QC
 
 import Util (tryMove)
 
-import Board
-import Player
-import Coordinate
+import Board (Board, putColAt, putBlack, emptyBoard, startBoard, gatherAllEnemyCells, getCell, isSamePlayerAs)
+import Player (Player(..), switch)
+import Coordinate (Coordinate(..))
 
 
 

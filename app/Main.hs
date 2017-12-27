@@ -4,9 +4,9 @@ module Main where
 import Protolude
 
 import Player (Player(Black), printPlayer)
-import Game
-import Board
-import Input
+import Game (Game(..), switchPlayer, getGame, putGame, play)
+import Board (Board, printStdBoard, startBoard)
+import Input (Input, parseInput)
 
 
 reaction :: (Monad m) => Maybe Input -> StateT Player (StateT Board m) Text
