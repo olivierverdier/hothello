@@ -16,7 +16,7 @@ coordParser = do
   c1 <- many1 digit
   _ <- space
   c2 <- many1 digit
-  let mcoordinate = liftA2 MakeCoordinate (readMaybe c1) (readMaybe c2)
+  let mcoordinate = liftA2 MkCoordinate (readMaybe c1) (readMaybe c2)
   case mcoordinate of
     Nothing -> unexpected "should not happen"
     Just coordinate -> return (Right coordinate)

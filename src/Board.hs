@@ -7,7 +7,7 @@ import Protolude hiding (intercalate)
 import qualified Data.Map.Strict as Map
 import Data.Text (intercalate)
 
-import Coordinate (Coordinate(MakeCoordinate), coordsInDir, allDirections)
+import Coordinate (Coordinate(MkCoordinate), coordsInDir, allDirections)
 import Player (Player(Black, White), Cell, printCell, switch)
 
 
@@ -21,10 +21,10 @@ emptyBoard = Map.empty
 
 startBoard :: Board
 startBoard = Map.fromList [
-  (MakeCoordinate 4 4, Black),
-  (MakeCoordinate 4 5, White),
-  (MakeCoordinate 5 4, White),
-  (MakeCoordinate 5 5, Black)]
+  (MkCoordinate 4 4, Black),
+  (MkCoordinate 4 5, White),
+  (MkCoordinate 5 4, White),
+  (MkCoordinate 5 5, Black)]
 
 getRow :: Int -- row size
   -> Int -- row
@@ -32,14 +32,14 @@ getRow :: Int -- row size
   -> [Cell]
 getRow size r board = do
   i <- [1..size]
-  return (Map.lookup (MakeCoordinate r i) board)
+  return (Map.lookup (MkCoordinate r i) board)
 
 printRow :: [Cell] -> Text
 printRow l = intercalate " " cellStrings
   where cellStrings = fmap printCell l
 
 printBoard :: Coordinate -> Board -> Text
-printBoard (MakeCoordinate m n) board = intercalate "\n" rows
+printBoard (MkCoordinate m n) board = intercalate "\n" rows
   where
     rows = do
       rowNb <- [1..m]
@@ -47,7 +47,7 @@ printBoard (MakeCoordinate m n) board = intercalate "\n" rows
       return (printRow row)
 
 printStdBoard :: Board -> Text
-printStdBoard = printBoard (MakeCoordinate 8 8)
+printStdBoard = printBoard (MkCoordinate 8 8)
 
 isSamePlayerAs :: Player -> Cell -> Bool
 isSamePlayerAs p (Just p') = p == p'
@@ -94,4 +94,4 @@ putBlack :: Coordinate -> Board -> Board
 putBlack = putAt Black
 
 putColAt :: Player -> Int -> [Int] -> Board -> Board
-putColAt me col rows board = foldr (\ r b -> putAt me (MakeCoordinate r col) b) board rows
+putColAt me col rows board = foldr (\ r b -> putAt me (MkCoordinate r col) b) board rows

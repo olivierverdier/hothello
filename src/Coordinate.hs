@@ -4,13 +4,13 @@ import Protolude
 
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Positive (Positive))
 
-data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
+data Coordinate = MkCoordinate Int Int deriving (Eq, Ord, Show)
 
 instance Arbitrary Coordinate where
   arbitrary = do
     Positive x <- arbitrary
     Positive y <- arbitrary
-    return (MakeCoordinate x y)
+    return (MkCoordinate x y)
 
 data Vector = MkVector Int Int deriving (Show)
 
@@ -19,7 +19,7 @@ class Action a where
   plus :: Vector -> a -> a
 
 instance Action Coordinate where
-  plus (MkVector vi vj) (MakeCoordinate i j) = MakeCoordinate (i+vi) (j+vj)
+  plus (MkVector vi vj) (MkCoordinate i j) = MkCoordinate (i+vi) (j+vj)
 
 instance Action Vector where
   plus (MkVector i j) (MkVector vi vj) = MkVector (i+vi) (j+vj)
