@@ -2,7 +2,7 @@ module Coordinate where
 
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Positive (Positive))
 
-data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord)
+data Coordinate = MakeCoordinate Int Int deriving (Eq, Ord, Show)
 
 instance Arbitrary Coordinate where
   arbitrary = do
@@ -12,8 +12,6 @@ instance Arbitrary Coordinate where
 
 data Vector = MakeVector Int Int deriving (Show)
 
-instance Show Coordinate where
-  show (MakeCoordinate x y) = "[" ++ show x ++ "," ++ show y ++ "]"
 
 class Action a where
   plus :: Vector -> a -> a
